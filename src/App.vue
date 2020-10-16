@@ -1,28 +1,50 @@
 <template>
-  <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div>
+    <Header />
+    <CommentAdd :addComment="addComment" />
+    <Conversation :conversations="conversations" />
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import Header from './components/Header'
+import CommentAdd from './components/CommentAdd'
+import Conversation from './components/Conversation'
+
+export const enumWho = {
+  user: 0,
+  chatbot: 1,
+};
+
+const cbComments = ['へぇ〜', 'なるほど', 'いいね', 'やりますねぇ', 'うん']
+const getCbComment = () => (cbComments[Math.floor(Math.random() * Math.floor(cbComments.length))]);
 
 export default {
   name: 'App',
   components: {
-    HelloWorld
-  }
+    Header,
+    CommentAdd,
+    Conversation,
+  },
+  data() {
+    return {
+      conversations: [],
+    }
+  },
+  methods: {
+    addCbComment() {
+      const cbConversation = { who: enumWho.chatbot, comment: getCbComment() };
+      this.conversations = [...this.conversations, cbConversation];
+    },
+    addComment(comment) {
+      const userConversation = { who: enumWho.user, comment };
+      this.conversations = [...this.conversations, userConversation];
+      setTimeout(() => this.addCbComment(), 800);
+    }
+  },
 }
 </script>
 
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
+@import "./styles/reset.scss";
 </style>
