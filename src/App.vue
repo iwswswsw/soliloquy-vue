@@ -1,7 +1,7 @@
 <template>
   <div>
     <Header />
-    <CommentAdd :addComment="addComment" />
+    <CommentAdd @addComment="addComment" />
     <Conversation :conversations="conversations" />
   </div>
 </template>
@@ -36,7 +36,8 @@ export default {
       const cbConversation = { who: enumWho.chatbot, comment: getCbComment() };
       this.conversations = [...this.conversations, cbConversation];
     },
-    addComment(comment) {
+    addComment(comment) {      
+      console.log(comment);
       const userConversation = { who: enumWho.user, comment };
       this.conversations = [...this.conversations, userConversation];
       setTimeout(() => this.addCbComment(), 800);
